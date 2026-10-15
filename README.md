@@ -4,12 +4,12 @@ Static portfolio for GitHub Pages at <https://Vasudev-Majhi.github.io>.
 
 ## Editing the content
 
-- `index.html` contains all text and links. The featured data collection case study is explicitly marked as illustrative; replace its story with verified project details and outcomes.
+- `index.html` contains the experience timeline, project summaries, research, and public links. The workflow drawings are illustrative; company source code and interfaces are not published here.
 - `styles.css` controls layout and visual design.
 - `script.js` handles the mobile menu, reveal animation, and footer year.
 - `favicon.svg` is the site icon.
 
-The contact section currently links to the public GitHub profile. Add an approved email or other contact method when ready.
+The contact section links to the professional email, LinkedIn, and public GitHub profile listed in Vasudev's October 2026 resume. It does not publish the resume's phone number.
 
 ## Local preview
 
