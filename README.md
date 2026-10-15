@@ -4,7 +4,7 @@ Static portfolio for GitHub Pages at <https://Vasudev-Majhi.github.io>.
 
 ## Editing the content
 
-- `index.html` contains all text and links. The three work cards are explicitly marked as sample case studies; replace them with verified project details and outcomes.
+- `index.html` contains all text and links. The featured data collection case study is explicitly marked as illustrative; replace its story with verified project details and outcomes.
 - `styles.css` controls layout and visual design.
 - `script.js` handles the mobile menu, reveal animation, and footer year.
 - `favicon.svg` is the site icon.
