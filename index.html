@@ -121,16 +121,17 @@
           <p class="sample-note">System visuals are illustrative. Company interfaces and source code are not shown.</p>
 
           <details class="system-detail reveal" open>
-            <summary><span><small>PUBLIC DESIGN SKETCH / AI EVALUATION</small><strong>The components behind that flow</strong><em>Task, execution, grading, review, and evidence</em></span><span class="detail-indicator" aria-hidden="true">+</span></summary>
+            <summary><span><small>PUBLIC SYSTEM DESIGN / AI EVALUATION</small><strong>How the system stays inspectable at scale</strong><em>Control plane, independent compute, quality gates, and evidence</em></span><span class="detail-indicator" aria-hidden="true">+</span></summary>
             <div class="system-detail-body">
-              <ol class="system-flow" aria-label="Illustrative evaluation system component flow">
-                <li><span>01 / INPUT</span><strong>Task API</strong><p>Instructions, criteria, and task identity</p></li>
-                <li><span>02 / RUN</span><strong>Sandbox worker</strong><p>Isolated execution and run evidence</p></li>
-                <li><span>03 / SCORE</span><strong>Grading service</strong><p>Automated result and failure reason</p></li>
-                <li><span>04 / DECIDE</span><strong>Review queue</strong><p>Human verdict and feedback</p></li>
-                <li><span>05 / TRACE</span><strong>Audit record</strong><p>Evidence linked across the flow</p></li>
+              <p class="system-intro">A task keeps one identity while separate services execute it, score it, and send the result through a human quality gate.</p>
+              <ol class="system-flow" aria-label="Illustrative evaluation system architecture">
+                <li><span>01 / CONTROL &amp; STATE</span><strong>Intake and task contract</strong><div class="system-components"><div><b>Gateway + Task API</b><small>FastAPI / gRPC boundary</small></div><div><b>PostgreSQL state</b><small>Task ID, criteria, status</small></div></div><p>A stable task contract anchors every downstream result.</p></li>
+                <li><span>02 / INDEPENDENT COMPUTE</span><strong>Execute, then grade</strong><div class="system-components"><div><b>Sandbox service</b><small>Isolated run + evidence</small></div><div><b>Grading service</b><small>Score + failure reason</small></div></div><p>Execution and scoring stay behind separate service boundaries.</p></li>
+                <li><span>03 / QUALITY &amp; DELIVERY</span><strong>Decide with evidence</strong><div class="system-components"><div><b>Review queue</b><small>Verdict, feedback, rework</small></div><div><b>Accepted output</b><small>Delivery with audit links</small></div></div><p>Only reviewed outcomes become trusted training signals.</p></li>
               </ol>
-              <p class="system-caveat">A simplified public design based on the workflow areas above. It does not show Turing's internal production architecture.</p>
+              <div class="system-evidence"><span>EVIDENCE CONNECTED ACROSS THE FLOW</span><p>Task identity <b>→</b> run record <b>→</b> score and failure reason <b>→</b> reviewer verdict <b>→</b> delivery record</p></div>
+              <div class="system-operations"><div><span>SCALING LEVER</span><p>Service boundaries keep sandbox execution and grading separate from task intake.</p></div><div><span>OBSERVABILITY</span><p>Sentry tracing connected the gateway and eight services, exposing silent gRPC failures.</p></div><div><span>DELIVERY PRACTICE</span><p>CI repairs restored 26 blocked jobs in the platform workflow.</p></div></div>
+              <p class="system-caveat">Illustrative public architecture based on platform work; this is not an internal deployment diagram or a throughput claim.</p>
             </div>
           </details>
 
@@ -139,48 +140,54 @@
             <article class="project-card reveal">
               <div class="project-top"><span class="project-index">01 / AI EVALUATION</span><span class="project-symbol" aria-hidden="true">✦</span></div>
               <h4>Guardrails for AI Training</h4>
-              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>QA specification</small></div>
-              <ol class="project-flow" aria-label="QA specification flow"><li><span>01</span><strong>Audit runs</strong></li><li><span>02</span><strong>Map failures</strong></li><li><span>03</span><strong>Specify checks</strong></li><li><span>04</span><strong>Plan regrading</strong></li></ol>
+              <div class="project-flow-caption"><span>SYSTEM FLOW</span><small>Research + specification</small></div>
+              <ol class="project-flow" aria-label="QA specification architecture flow"><li><span>01</span><strong>QA audits</strong><small>15 observed runs</small></li><li><span>02</span><strong>Failure registry</strong><small>Environment + grader</small></li><li><span>03</span><strong>Check contracts</strong><small>MCP setup + scoring</small></li><li><span>04</span><strong>Regrade plan</strong><small>Checkpoint feedback</small></li></ol>
+              <div class="project-engineering"><span>ENGINEERING DECISION</span><p>Explicit setup and grading contracts make failures easier to isolate across sandbox jobs.</p></div>
               <div class="project-story"><p><b>Problem</b> A task can look right while a broken environment or grader teaches an AI model the wrong lesson.</p><p><b>Design</b> Turned 15 QA audits into a reusable specification for MCP setup and grading contracts, isolated sandbox jobs, queued execution, and checkpoint regrading.</p><p><b>Impact</b> A reconstructed 94-mode failure checklist makes expected environment checks explicit across new training tasks.</p></div>
               <div class="project-footer"><span>Evaluation</span><span>Architecture</span></div>
             </article>
             <article class="project-card reveal">
               <div class="project-top"><span class="project-index">02 / DATA OPERATIONS</span><span class="project-symbol" aria-hidden="true">✦</span></div>
               <h4>The Trusted Data Pipeline</h4>
-              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>Platform workflow</small></div>
-              <ol class="project-flow" aria-label="Data collection flow"><li><span>01</span><strong>Create task</strong></li><li><span>02</span><strong>Private upload</strong></li><li><span>03</span><strong>Anonymise run</strong></li><li><span>04</span><strong>Review & approve</strong></li></ol>
-              <div class="project-story"><p><b>Problem</b> Teams need useful customer data, but reviewers should never need to see the originals.</p><p><b>Design</b> Designed an asynchronous data pipeline: direct object-store uploads, isolated AI anonymisation workers, frozen run snapshots, and role-scoped two-stage review.</p><p><b>Impact</b> The architecture keeps large files off app servers and originals away from reviewers, while linking every approval to its exact anonymisation run.</p></div>
-              <div class="project-footer"><span>Workflow design</span><span>Data quality</span></div>
+              <div class="project-flow-caption"><span>SYSTEM FLOW</span><small>Built platform workflow</small></div>
+              <ol class="project-flow" aria-label="Data collection architecture flow"><li><span>01</span><strong>Task API</strong><small>Criteria + access</small></li><li><span>02</span><strong>Object upload</strong><small>Direct to storage</small></li><li><span>03</span><strong>AI worker</strong><small>Optional, frozen run</small></li><li><span>04</span><strong>Admin review</strong><small>Approve or return</small></li></ol>
+              <div class="project-engineering"><span>SCALING DECISION</span><p>Direct uploads keep large files off app servers; each optional AI run freezes its input set.</p></div>
+              <div class="project-story"><p><b>Problem</b> Teams need to collect and review large files without losing track of uploads, AI changes, or decisions.</p><p><b>Design</b> Built task intake, direct object-store uploads, optional isolated anonymisation runs, QA findings, and a single admin approve-or-return path.</p><p><b>Impact</b> File transfer bypasses app servers. Immutable run snapshots and append-only review history preserve evidence for the work that actually happened.</p></div>
+              <div class="project-footer"><span>Data platform</span><span>Review workflow</span></div>
             </article>
             <article class="project-card reveal">
               <div class="project-top"><span class="project-index">03 / CONSUMER AI</span><span class="project-symbol" aria-hidden="true">✦</span></div>
               <h4>Skin Insights with Evidence</h4>
-              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>Built product components</small></div>
-              <ol class="project-flow" aria-label="Skin insights flow"><li><span>01</span><strong>Profile input</strong></li><li><span>02</span><strong>Skin findings</strong></li><li><span>03</span><strong>Verify claims</strong></li><li><span>04</span><strong>Explain match</strong></li></ol>
+              <div class="project-flow-caption"><span>SYSTEM FLOW</span><small>Built product components</small></div>
+              <ol class="project-flow" aria-label="Skin insights architecture flow"><li><span>01</span><strong>Analysis API</strong><small>Profile + photo</small></li><li><span>02</span><strong>Match scores</strong><small>Profile × catalogue</small></li><li><span>03</span><strong>Research worker</strong><small>Official sources</small></li><li><span>04</span><strong>Explained fit</strong><small>Claims + citations</small></li></ol>
+              <div class="project-engineering"><span>LATENCY DECISION</span><p>Source research runs outside the matching request, so slower evidence checks do not block a response.</p></div>
               <div class="project-story"><p><b>Problem</b> A product list cannot explain why a skincare recommendation fits or whether its claims are real.</p><p><b>Design</b> Separated FastAPI skin analysis and matching from queued product-research workers that verify ingredients against official sources and store claim provenance.</p><p><b>Impact</b> Recommendations explain fit with traceable product evidence; unsupported claims stay unverified, and slow research stays off the customer request path.</p></div>
               <div class="project-footer"><span>AI product</span><span>Recommendations</span></div>
             </article>
             <article class="project-card reveal">
               <div class="project-top"><span class="project-index">04 / INDUSTRIAL AI</span><span class="project-symbol" aria-hidden="true">✦</span></div>
               <h4>From Idea to Factory</h4>
-              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>Agent workflow design</small></div>
-              <ol class="project-flow" aria-label="Manufacturer research flow"><li><span>01</span><strong>Product idea</strong></li><li><span>02</span><strong>Verify factory</strong></li><li><span>03</span><strong>Map suppliers</strong></li><li><span>04</span><strong>Build spec</strong></li></ol>
-              <div class="project-story"><p><b>Problem</b> A brand name often hides the factory and components behind a product.</p><p><b>Design</b> Specified an agent workflow to verify factories behind sellers, map components and suppliers, and export an evidence-linked build specification.</p><p><b>Impact</b> The design creates an inspectable route from rough idea to supplier shortlist and build plan; the product remains in development.</p></div>
+              <div class="project-flow-caption"><span>SYSTEM FLOW</span><small>Research workflow built</small></div>
+              <ol class="project-flow" aria-label="Manufacturer research architecture flow"><li><span>01</span><strong>Idea intake</strong><small>URL, photo, constraints</small></li><li><span>02</span><strong>Research agents</strong><small>Bounded source search</small></li><li><span>03</span><strong>Proof gate</strong><small>Factory + suppliers</small></li><li><span>04</span><strong>Build spec</strong><small>Component evidence</small></li></ol>
+              <div class="project-engineering"><span>RELIABILITY DECISION</span><p>Bounded research and saved source facts make each manufacturer claim inspectable before it enters a build plan.</p></div>
+              <div class="project-story"><p><b>Problem</b> A brand name often hides the factory and components behind a product.</p><p><b>Design</b> Built a FastAPI research workflow with bounded agents, manufacturer proof checks, saved source facts, and an evidence-linked component plan.</p><p><b>Impact</b> The workflow turns rough ideas into inspectable supplier evidence and a build specification; the wider product remains in development.</p></div>
               <div class="project-footer"><span>Agentic research</span><span>In development</span></div>
             </article>
             <article class="project-card reveal">
               <div class="project-top"><span class="project-index">05 / RECRUITING AI</span><span class="project-symbol" aria-hidden="true">✦</span></div>
               <h4>Hiring with Evidence</h4>
-              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>Built agent components</small></div>
-              <ol class="project-flow" aria-label="Recruiting agent flow"><li><span>01</span><strong>Job criteria</strong></li><li><span>02</span><strong>Discover people</strong></li><li><span>03</span><strong>Cited dossier</strong></li><li><span>04</span><strong>Match review</strong></li></ol>
+              <div class="project-flow-caption"><span>SYSTEM FLOW</span><small>Built agent components</small></div>
+              <ol class="project-flow" aria-label="Recruiting agent architecture flow"><li><span>01</span><strong>Job contract</strong><small>Immutable criteria</small></li><li><span>02</span><strong>Discovery agents</strong><small>Bounded providers</small></li><li><span>03</span><strong>Evidence registry</strong><small>Identity + citations</small></li><li><span>04</span><strong>Fit verdict</strong><small>Criteria + review</small></li></ol>
+              <div class="project-engineering"><span>RELIABILITY DECISION</span><p>Provider adapters, run budgets, and checkpoints contain external search failures and make dossiers traceable.</p></div>
               <div class="project-story"><p><b>Problem</b> Recruiters see long candidate lists but too little proof of fit.</p><p><b>Design</b> Built modular agents for candidate discovery, cited dossiers, role matching, and evaluation, with provider adapters and bounded runs.</p><p><b>Impact</b> Six merged agent components and 54 passing offline tests established a reusable sourcing base; production match quality and throughput remain under validation.</p></div>
               <div class="project-footer"><span>Caplof</span><span>In development</span></div>
             </article>
             <article class="project-card reveal">
               <div class="project-top"><span class="project-index">06 / AI GOVERNANCE</span><span class="project-symbol" aria-hidden="true">✦</span></div>
               <h4>Can an AI Really Forget?</h4>
-              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>Research prototype</small></div>
-              <ol class="project-flow" aria-label="Machine unlearning audit flow"><li><span>01</span><strong>Checkpoint</strong></li><li><span>02</span><strong>Recovery probes</strong></li><li><span>03</span><strong>Score evidence</strong></li><li><span>04</span><strong>Report verdict</strong></li></ol>
+              <div class="project-flow-caption"><span>SYSTEM FLOW</span><small>Research prototype</small></div>
+              <ol class="project-flow" aria-label="Machine unlearning audit architecture flow"><li><span>01</span><strong>Checkpoint</strong><small>Forget set + reference</small></li><li><span>02</span><strong>Probe engine</strong><small>Direct + relearning</small></li><li><span>03</span><strong>Evidence score</strong><small>Per-item confidence</small></li><li><span>04</span><strong>Verdict</strong><small>Pass / fail / unclear</small></li></ol>
+              <div class="project-engineering"><span>VALIDATION DECISION</span><p>Pluggable probes and reference calibration keep a direct refusal from being mistaken for proof of forgetting.</p></div>
               <div class="project-story"><p><b>Problem</b> Removing training data does not prove a model has forgotten it.</p><p><b>Design</b> Built a method-agnostic audit with pluggable recovery probes and evidence scoring; designed a separate control plane for data lineage and erasure holds.</p><p><b>Impact</b> Compatible model checkpoints can be challenged through the same evaluation path; the prototype reports inconclusive when evidence cannot support a deletion claim.</p></div>
               <div class="project-footer"><span>VMUI</span><span>Research prototype</span></div>
             </article>
