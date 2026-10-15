@@ -9,7 +9,7 @@ Static portfolio for GitHub Pages at <https://Vasudev-Majhi.github.io>.
 - `script.js` handles the mobile menu, reveal animation, and footer year.
 - `favicon.svg` is the site icon.
 
-The contact section links to the professional email, LinkedIn, and public GitHub profile listed in Vasudev's October 2026 resume. It does not publish the resume's phone number.
+The contact section uses Vasudev's confirmed [LinkedIn profile](https://www.linkedin.com/in/vasudev-majhi-076693226), `vasudevmajhicoc@gmail.com`, and public GitHub profile. It does not publish the resume's phone number.
 
 ## Local preview
 
