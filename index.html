@@ -104,33 +104,86 @@
           </div>
 
           <article class="case-study reveal" aria-labelledby="case-title">
-            <div class="case-visual" aria-hidden="true"><div class="case-visual-top"><span>TRUSTED DATA WORKFLOW</span><span>WORKFLOW VIEW</span></div><div class="blueprint"><div class="blueprint-line"></div><div class="blueprint-node"><b>01</b><strong>CREATE</strong><small>Contributor tasks</small></div><div class="blueprint-node"><b>02</b><strong>EXECUTE</strong><small>Sandbox & grading</small></div><div class="blueprint-node"><b>03</b><strong>REVIEW</strong><small>Human quality gates</small></div><div class="blueprint-node"><b>04</b><strong>DELIVER</strong><small>Accepted data</small></div></div><div class="case-visual-bottom"><span>BRIEF</span><span class="case-arrow">→</span><span>TRUSTED OUTPUT</span></div></div>
+            <figure class="case-visual">
+              <figcaption class="case-visual-top"><span>AI EVALUATION PLATFORM</span><span>SIMPLIFIED PUBLIC FLOW</span></figcaption>
+              <div class="case-flow-heading"><span>WHAT THE PLATFORM MOVES THROUGH</span><strong>One task, from brief to trusted data.</strong></div>
+              <ol class="blueprint" aria-label="Evaluation task flow">
+                <li class="blueprint-node"><b>01</b><div><strong>Create task</strong><small>Instructions and scoring criteria</small></div></li>
+                <li class="blueprint-node"><b>02</b><div><strong>Run in a sandbox</strong><small>Isolated attempt with run evidence</small></div></li>
+                <li class="blueprint-node"><b>03</b><div><strong>Grade the attempt</strong><small>Score and failure reason</small></div></li>
+                <li class="blueprint-node"><b>04</b><div><strong>Human review</strong><small>Decision, feedback, and rework</small></div></li>
+                <li class="blueprint-node"><b>05</b><div><strong>Deliver accepted data</strong><small>Output linked to its audit trail</small></div></li>
+              </ol>
+              <div class="case-visual-bottom"><span>TRACE: TASK → RUN → SCORE → REVIEW → DELIVERY</span></div>
+            </figure>
             <div class="case-content"><span class="sample-badge">AI EVALUATION · FEATURED WORK</span><h3 id="case-title">From tasks to trusted training signals.</h3><p>A trustworthy result needs a record of what ran, how it was graded, and who reviewed it.</p><div class="case-detail"><span>PROBLEM</span><p>AI training tasks lose value when no one can explain how they ran, were scored, or got approved.</p></div><div class="case-detail"><span>DESIGN</span><p>Separated sandbox execution, automated grading, human review, and audit into a service-backed workflow using FastAPI/gRPC, PostgreSQL, and GKE. Sentry tracing crossed the gateway and eight services.</p></div><div class="case-detail"><span>IMPACT</span><p>Each accepted task carries execution, score, and approval evidence through the pipeline. Cross-service tracing exposed silent gRPC failures, while CI repairs restored 26 blocked jobs.</p></div></div>
           </article>
           <p class="sample-note">System visuals are illustrative. Company interfaces and source code are not shown.</p>
 
-          <details class="system-detail reveal">
-            <summary><span><small>PUBLIC DESIGN SKETCH / AI EVALUATION</small><strong>How the quality flow fits together</strong><em>Open the component and data view</em></span><span class="detail-indicator" aria-hidden="true">+</span></summary>
+          <details class="system-detail reveal" open>
+            <summary><span><small>PUBLIC DESIGN SKETCH / AI EVALUATION</small><strong>The components behind that flow</strong><em>Task, execution, grading, review, and evidence</em></span><span class="detail-indicator" aria-hidden="true">+</span></summary>
             <div class="system-detail-body">
-              <div class="system-flow" aria-label="Illustrative evaluation system data flow">
-                <div><span>01 / INPUT</span><strong>Task API</strong><p>Instructions, criteria, and task identity</p></div>
-                <div><span>02 / RUN</span><strong>Sandbox worker</strong><p>Isolated execution and run evidence</p></div>
-                <div><span>03 / SCORE</span><strong>Grading service</strong><p>Automated result and failure reason</p></div>
-                <div><span>04 / DECIDE</span><strong>Review queue</strong><p>Human verdict and feedback</p></div>
-                <div><span>05 / TRACE</span><strong>Audit record</strong><p>Linked evidence for accepted delivery</p></div>
-              </div>
+              <ol class="system-flow" aria-label="Illustrative evaluation system component flow">
+                <li><span>01 / INPUT</span><strong>Task API</strong><p>Instructions, criteria, and task identity</p></li>
+                <li><span>02 / RUN</span><strong>Sandbox worker</strong><p>Isolated execution and run evidence</p></li>
+                <li><span>03 / SCORE</span><strong>Grading service</strong><p>Automated result and failure reason</p></li>
+                <li><span>04 / DECIDE</span><strong>Review queue</strong><p>Human verdict and feedback</p></li>
+                <li><span>05 / TRACE</span><strong>Audit record</strong><p>Evidence linked across the flow</p></li>
+              </ol>
               <p class="system-caveat">A simplified public design based on the workflow areas above. It does not show Turing's internal production architecture.</p>
             </div>
           </details>
 
           <div class="project-heading reveal" id="projects"><div><span class="overline">PRODUCTS & PLATFORMS</span><h3>Projects across the full lifecycle.</h3></div><p>Different domains, connected by the same focus on usable AI systems.</p></div>
           <div class="project-grid">
-            <article class="project-card reveal"><div class="project-top"><span class="project-index">01 / AI EVALUATION</span><span class="project-symbol" aria-hidden="true">✦</span></div><h4>Guardrails for AI Training</h4><div class="project-story"><p><b>Problem</b> A task can look right while a broken environment or grader teaches an AI model the wrong lesson.</p><p><b>Design</b> Turned 15 QA audits into a reusable specification for MCP setup and grading contracts, isolated sandbox jobs, queued execution, and checkpoint regrading.</p><p><b>Impact</b> Catalogued 94 environment failure modes into a phased QA plan, making checks consistent across new training tasks.</p></div><div class="project-footer"><span>Evaluation</span><span>Architecture</span></div></article>
-            <article class="project-card reveal"><div class="project-top"><span class="project-index">02 / DATA OPERATIONS</span><span class="project-symbol" aria-hidden="true">✦</span></div><h4>The Trusted Data Pipeline</h4><div class="project-story"><p><b>Problem</b> Teams need useful customer data, but reviewers should never need to see the originals.</p><p><b>Design</b> Designed an asynchronous data pipeline: direct object-store uploads, isolated AI anonymisation workers, frozen run snapshots, and role-scoped two-stage review.</p><p><b>Impact</b> The architecture keeps large files off app servers and originals away from reviewers, while linking every approval to its exact anonymisation run.</p></div><div class="project-footer"><span>Workflow design</span><span>Data quality</span></div></article>
-            <article class="project-card reveal"><div class="project-top"><span class="project-index">03 / CONSUMER AI</span><span class="project-symbol" aria-hidden="true">✦</span></div><h4>Skin Insights with Evidence</h4><div class="project-story"><p><b>Problem</b> A product list cannot explain why a skincare recommendation fits or whether its claims are real.</p><p><b>Design</b> Separated FastAPI skin analysis and matching from queued product-research workers that verify ingredients against official sources and store claim provenance.</p><p><b>Impact</b> Recommendations explain fit with traceable product evidence; unsupported claims stay unverified, and slow research stays off the customer request path.</p></div><div class="project-footer"><span>AI product</span><span>Recommendations</span></div></article>
-            <article class="project-card reveal"><div class="project-top"><span class="project-index">04 / INDUSTRIAL AI</span><span class="project-symbol" aria-hidden="true">✦</span></div><h4>From Idea to Factory</h4><div class="project-story"><p><b>Problem</b> A brand name often hides the factory and components behind a product.</p><p><b>Design</b> Specified an agent workflow to verify factories behind sellers, map components and suppliers, and export an evidence-linked build specification.</p><p><b>Impact</b> The design creates an inspectable route from rough idea to supplier shortlist and build plan; the product remains in development.</p></div><div class="project-footer"><span>Agentic research</span><span>In development</span></div></article>
-            <article class="project-card reveal"><div class="project-top"><span class="project-index">05 / RECRUITING AI</span><span class="project-symbol" aria-hidden="true">✦</span></div><h4>Hiring with Evidence</h4><div class="project-story"><p><b>Problem</b> Recruiters see long candidate lists but too little proof of fit.</p><p><b>Design</b> Built modular agents for candidate discovery, cited dossiers, role matching, and evaluation, with provider adapters and bounded runs.</p><p><b>Impact</b> Six merged agent components and 54 passing offline tests established a reusable sourcing base; production match quality and throughput remain under validation.</p></div><div class="project-footer"><span>Caplof</span><span>In development</span></div></article>
-            <article class="project-card reveal"><div class="project-top"><span class="project-index">06 / AI GOVERNANCE</span><span class="project-symbol" aria-hidden="true">✦</span></div><h4>Can an AI Really Forget?</h4><div class="project-story"><p><b>Problem</b> Removing training data does not prove a model has forgotten it.</p><p><b>Design</b> Built a method-agnostic audit with pluggable recovery probes and evidence scoring; designed a separate control plane for data lineage and erasure holds.</p><p><b>Impact</b> Compatible model checkpoints can be challenged through the same evaluation path; the prototype reports inconclusive when evidence cannot support a deletion claim.</p></div><div class="project-footer"><span>VMUI</span><span>Research prototype</span></div></article>
+            <article class="project-card reveal">
+              <div class="project-top"><span class="project-index">01 / AI EVALUATION</span><span class="project-symbol" aria-hidden="true">✦</span></div>
+              <h4>Guardrails for AI Training</h4>
+              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>QA specification</small></div>
+              <ol class="project-flow" aria-label="QA specification flow"><li><span>01</span><strong>Audit runs</strong></li><li><span>02</span><strong>Map failures</strong></li><li><span>03</span><strong>Specify checks</strong></li><li><span>04</span><strong>Plan regrading</strong></li></ol>
+              <div class="project-story"><p><b>Problem</b> A task can look right while a broken environment or grader teaches an AI model the wrong lesson.</p><p><b>Design</b> Turned 15 QA audits into a reusable specification for MCP setup and grading contracts, isolated sandbox jobs, queued execution, and checkpoint regrading.</p><p><b>Impact</b> A reconstructed 94-mode failure checklist makes expected environment checks explicit across new training tasks.</p></div>
+              <div class="project-footer"><span>Evaluation</span><span>Architecture</span></div>
+            </article>
+            <article class="project-card reveal">
+              <div class="project-top"><span class="project-index">02 / DATA OPERATIONS</span><span class="project-symbol" aria-hidden="true">✦</span></div>
+              <h4>The Trusted Data Pipeline</h4>
+              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>Platform workflow</small></div>
+              <ol class="project-flow" aria-label="Data collection flow"><li><span>01</span><strong>Create task</strong></li><li><span>02</span><strong>Private upload</strong></li><li><span>03</span><strong>Anonymise run</strong></li><li><span>04</span><strong>Review & approve</strong></li></ol>
+              <div class="project-story"><p><b>Problem</b> Teams need useful customer data, but reviewers should never need to see the originals.</p><p><b>Design</b> Designed an asynchronous data pipeline: direct object-store uploads, isolated AI anonymisation workers, frozen run snapshots, and role-scoped two-stage review.</p><p><b>Impact</b> The architecture keeps large files off app servers and originals away from reviewers, while linking every approval to its exact anonymisation run.</p></div>
+              <div class="project-footer"><span>Workflow design</span><span>Data quality</span></div>
+            </article>
+            <article class="project-card reveal">
+              <div class="project-top"><span class="project-index">03 / CONSUMER AI</span><span class="project-symbol" aria-hidden="true">✦</span></div>
+              <h4>Skin Insights with Evidence</h4>
+              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>Built product components</small></div>
+              <ol class="project-flow" aria-label="Skin insights flow"><li><span>01</span><strong>Profile input</strong></li><li><span>02</span><strong>Skin findings</strong></li><li><span>03</span><strong>Verify claims</strong></li><li><span>04</span><strong>Explain match</strong></li></ol>
+              <div class="project-story"><p><b>Problem</b> A product list cannot explain why a skincare recommendation fits or whether its claims are real.</p><p><b>Design</b> Separated FastAPI skin analysis and matching from queued product-research workers that verify ingredients against official sources and store claim provenance.</p><p><b>Impact</b> Recommendations explain fit with traceable product evidence; unsupported claims stay unverified, and slow research stays off the customer request path.</p></div>
+              <div class="project-footer"><span>AI product</span><span>Recommendations</span></div>
+            </article>
+            <article class="project-card reveal">
+              <div class="project-top"><span class="project-index">04 / INDUSTRIAL AI</span><span class="project-symbol" aria-hidden="true">✦</span></div>
+              <h4>From Idea to Factory</h4>
+              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>Agent workflow design</small></div>
+              <ol class="project-flow" aria-label="Manufacturer research flow"><li><span>01</span><strong>Product idea</strong></li><li><span>02</span><strong>Verify factory</strong></li><li><span>03</span><strong>Map suppliers</strong></li><li><span>04</span><strong>Build spec</strong></li></ol>
+              <div class="project-story"><p><b>Problem</b> A brand name often hides the factory and components behind a product.</p><p><b>Design</b> Specified an agent workflow to verify factories behind sellers, map components and suppliers, and export an evidence-linked build specification.</p><p><b>Impact</b> The design creates an inspectable route from rough idea to supplier shortlist and build plan; the product remains in development.</p></div>
+              <div class="project-footer"><span>Agentic research</span><span>In development</span></div>
+            </article>
+            <article class="project-card reveal">
+              <div class="project-top"><span class="project-index">05 / RECRUITING AI</span><span class="project-symbol" aria-hidden="true">✦</span></div>
+              <h4>Hiring with Evidence</h4>
+              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>Built agent components</small></div>
+              <ol class="project-flow" aria-label="Recruiting agent flow"><li><span>01</span><strong>Job criteria</strong></li><li><span>02</span><strong>Discover people</strong></li><li><span>03</span><strong>Cited dossier</strong></li><li><span>04</span><strong>Match review</strong></li></ol>
+              <div class="project-story"><p><b>Problem</b> Recruiters see long candidate lists but too little proof of fit.</p><p><b>Design</b> Built modular agents for candidate discovery, cited dossiers, role matching, and evaluation, with provider adapters and bounded runs.</p><p><b>Impact</b> Six merged agent components and 54 passing offline tests established a reusable sourcing base; production match quality and throughput remain under validation.</p></div>
+              <div class="project-footer"><span>Caplof</span><span>In development</span></div>
+            </article>
+            <article class="project-card reveal">
+              <div class="project-top"><span class="project-index">06 / AI GOVERNANCE</span><span class="project-symbol" aria-hidden="true">✦</span></div>
+              <h4>Can an AI Really Forget?</h4>
+              <div class="project-flow-caption"><span>HOW IT WORKS</span><small>Research prototype</small></div>
+              <ol class="project-flow" aria-label="Machine unlearning audit flow"><li><span>01</span><strong>Checkpoint</strong></li><li><span>02</span><strong>Recovery probes</strong></li><li><span>03</span><strong>Score evidence</strong></li><li><span>04</span><strong>Report verdict</strong></li></ol>
+              <div class="project-story"><p><b>Problem</b> Removing training data does not prove a model has forgotten it.</p><p><b>Design</b> Built a method-agnostic audit with pluggable recovery probes and evidence scoring; designed a separate control plane for data lineage and erasure holds.</p><p><b>Impact</b> Compatible model checkpoints can be challenged through the same evaluation path; the prototype reports inconclusive when evidence cannot support a deletion claim.</p></div>
+              <div class="project-footer"><span>VMUI</span><span>Research prototype</span></div>
+            </article>
           </div>
 
           <div class="more-work reveal">
